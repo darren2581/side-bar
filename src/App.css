@@ -1,38 +1,150 @@
-.App {
-  text-align: center;
+:root{
+  --base-clr: #11121a;
+  --line-clr: #42434a;
+  --hover-clr: #222533;
+  --text-clr: #e6e6ef;
+  --accent-clt: #5e63ff;
+  --secondary-text-clr: #b0b3c1;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+*{
+  margin: 0;
+  padding: 0;
+  line-height: 1.5rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+.App{
   min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--base-clr);
+  color: var(--text-clr);
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+
+#sidebar{
+  box-sizing: border-box;
+  height: 100vh;
+  width: 250px;
+  padding: 5px 1em;
+  background-color: var(--base-clr);
+  border-right: 1px solid var(--line-clr);
+  
+  position: sticky;
+  top: 0;
+  align-self: start;
+}
+
+#sidebar ul{
+  list-style: none;
+}
+
+#sidebar ul .first-child{
   display: flex;
-  flex-direction: column;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+  .logo{
+    font-weight: 600;
+  }
+}
+
+#sidebar ul li.active a{
+  color: var(--accent-clt);
+}
+
+#sidebar a, #sidebar .dropdown-btn, #sidebar .logo{
+  border-radius: .5em;
+  padding: .85em;
+  text-decoration: none;
+  color: var(--text-clr);
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 1em;
 }
 
-.App-link {
-  color: #61dafb;
+.dropdown-btn{
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  font: inherit;
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+#sidebar a span .dropdown, #sidebar .dropdown-btn .dropdown{
+  flex-grow: 1;
+}
+
+#sidebar a:hover, #sidebar .dropdown-btn:hover{
+  background-color: var(--hover-clr);
+}
+
+#sidebar .sub-menu{
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: 300ms ease-in-out;
+
+  div{
+    overflow: hidden;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+#sidebar .sub-menu.show{
+  grid-template-rows: 1fr;
+}
+
+.dropdown-btn span:last-child {
+  transition: transform 0.3s ease; /* Smooth transition for the rotation */
+}
+
+.dropdown-btn span.rotate {
+  transform: rotate(180deg); /* Rotate the arrow 180 degrees */
+}
+
+#sidebar .sub-menu a{
+  padding-left: 2em;
+}
+
+#toggle-btn{
+  margin-left:auto;
+  height: 50px;
+  padding: 1em;
+  border: none;
+  border-radius: .5em;
+  background: none;
+  cursor: pointer;
+  color: var(--text-clr);
+
+  span{
+    transition: rotate 150ms ease;
   }
+}
+
+#toggle-btn:hover{
+  background-color: var(--hover-clr);
+}
+
+
+
+
+
+main{
+  padding: min(30px, 7%);
+}
+
+main p{
+  color: var(--secondary-text-clr);
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.container{
+  border: 1px solid var(--line-clr);
+  border-radius: 1em;
+  margin-bottom: 20px;
+  padding: min(3em, 15%);
+}
+
+h2, p{
+  margin-top: 1em;
 }
