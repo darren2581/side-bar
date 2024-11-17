@@ -1,112 +1,149 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
 function App() {
-  const toggleSubMenu = (e) => {
-    const button = e.currentTarget;
-    const submenu = button.nextElementSibling;
-    const arrow = button.querySelector('span:last-child');
+  const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isSubMenuOpen, setSubMenuOpen] = useState(false);
 
-    if (submenu) {
-      submenu.classList.toggle('show'); // Toggles visibility
-      arrow.classList.toggle('rotate'); // Toggles rotation of the arrow
+  const toggleSidebar = () => {
+    if (isSidebarCollapsed) {
+      // If the sidebar is collapsed, open it without additional actions
+      setSidebarCollapsed(false);
+    } else {
+      // If the sidebar is open, close it and also close any open submenus
+      const allSubmenus = document.querySelectorAll('.sub-menu.show');
+      allSubmenus.forEach((submenu) => submenu.classList.remove('show')); // Close all submenus
+  
+      const allArrows = document.querySelectorAll('.dropdown-btn span.rotate');
+      allArrows.forEach((arrow) => arrow.classList.remove('rotate')); // Reset all arrows
+  
+      setSidebarCollapsed(true); // Collapse the sidebar
     }
   };
 
+  const toggleSubMenu = (e) => {
+    const button = e.currentTarget;
+  
+    // Open the sidebar if it's collapsed
+    if (isSidebarCollapsed) {
+      setSidebarCollapsed(false);
+  
+      // Use a timeout to ensure the submenu logic executes after the sidebar animation
+      setTimeout(() => {
+        const submenu = button.nextElementSibling;
+        const arrow = button.querySelector('span:last-child');
+        if (submenu) {
+          submenu.classList.add('show'); // Open the submenu
+          arrow.classList.add('rotate'); // Rotate the arrow
+        }
+      }, 300); // Match the sidebar's transition duration
+    } else {
+      // Handle normal submenu toggle behavior
+      const submenu = button.nextElementSibling;
+      const arrow = button.querySelector('span:last-child');
+      if (submenu) {
+        submenu.classList.toggle('show'); // Toggle submenu visibility
+        arrow.classList.toggle('rotate'); // Toggle arrow rotation
+      }
+    }
+  };
+  
+
   return (
-    <div className="App">
-      <nav id='sidebar'>
+    <div className={`App ${isSidebarCollapsed ? 'collapsed' : ''}`}>
+      <nav id="sidebar">
         <ul>
-          <li className='first-child'>
-            <span className='logo'>coding2go</span>
-            <button id='toggle-btn'>
-              <span class="material-symbols-outlined">keyboard_double_arrow_left</span>
+          <li className="first-child">
+            <span className="logo">coding2go</span>
+            <button onClick={toggleSidebar} id="toggle-btn">
+              <span className="material-symbols-outlined">
+                {isSidebarCollapsed
+                  ? 'keyboard_double_arrow_right'
+                  : 'keyboard_double_arrow_left'}
+              </span>
             </button>
           </li>
-          <li className='active'>
-            <a href='#'>
-              <span class="material-symbols-outlined">home</span>
+          <li className="active">
+            <a href="#">
+              <span className="material-symbols-outlined">home</span>
               <span>Home</span>
             </a>
           </li>
           <li>
-            <a href='#'>
-              <span class="material-symbols-outlined">dashboard</span>
+            <a href="#">
+              <span className="material-symbols-outlined">dashboard</span>
               <span>Dashboard</span>
             </a>
           </li>
           <li>
-            <button onClick={toggleSubMenu} className='dropdown-btn'>
-              <span class="material-symbols-outlined">create_new_folder</span>
-              <span className='dropdown'>Create</span>
-              <span class="material-symbols-outlined">keyboard_arrow_down</span>
+            <button onClick={toggleSubMenu} className="dropdown-btn">
+              <span className="material-symbols-outlined">create_new_folder</span>
+              <span className="dropdown">Create</span>
+              <span className="material-symbols-outlined">keyboard_arrow_down</span>
             </button>
-            <ul className='sub-menu'>
-                <div>
+            <ul className="sub-menu">
+              <div>
                 <li>
-                  <a href='#'>Folder</a>
+                  <a href="#">Folder</a>
                 </li>
                 <li>
-                  <a href='#'>Document</a>
+                  <a href="#">Document</a>
                 </li>
                 <li>
-                  <a href='#'>Project</a>
+                  <a href="#">Project</a>
                 </li>
-                </div>
-              </ul>
+              </div>
+            </ul>
           </li>
           <li>
-            <button onClick={toggleSubMenu} className='dropdown-btn'>
-              <span class="material-symbols-outlined">checklist</span>
-              <span className='dropdown'>To-Do-List</span>
-              <span class="material-symbols-outlined">keyboard_arrow_down</span>
+            <button onClick={toggleSubMenu} className="dropdown-btn">
+              <span className="material-symbols-outlined">checklist</span>
+              <span className="dropdown">ToDo-List</span>
+              <span className="material-symbols-outlined">keyboard_arrow_down</span>
             </button>
-            <ul className='sub-menu'>
-                <div>
-                  <li>
-                    <a href='#'>Work</a>
-                  </li>
-                  <li>
-                    <a href='#'>Private</a>
-                  </li>
-                  <li>
-                    <a href='#'>Coding</a>
-                  </li>
-                  <li>
-                    <a href='#'>Gardening</a>
-                  </li>
-                  <li>
-                    <a href='#'>School</a>
-                  </li>
-                </div>
-              </ul>
+            <ul className="sub-menu">
+              <div>
+                <li>
+                  <a href="#">Work</a>
+                </li>
+                <li>
+                  <a href="#">Private</a>
+                </li>
+                <li>
+                  <a href="#">Coding</a>
+                </li>
+                <li>
+                  <a href="#">Gardening</a>
+                </li>
+                <li>
+                  <a href="#">School</a>
+                </li>
+              </div>
+            </ul>
           </li>
           <li>
-            <a href='#'>
-              <span class="material-symbols-outlined">calendar_month</span>
+            <a href="#">
+              <span className="material-symbols-outlined">calendar_month</span>
               <span>Calender</span>
             </a>
           </li>
           <li>
-            <a href='#'>
-              <span class="material-symbols-outlined">person</span>
+            <a href="#">
+              <span className="material-symbols-outlined">person</span>
               <span>Profile</span>
             </a>
           </li>
         </ul>
       </nav>
       <main>
-        <div className='container'>
+        <div className="container">
           <h2>React App</h2>
-          <p>Learning to code can open doors to endless possibilities, from creating innovative applications to solving real-world problems. With consistent practice, the once-complicated syntax becomes second nature. Start small, experiment, and embrace mistakes—they’re part of the journey. Every line of code brings you closer to mastering this powerful skillset.</p>
-        </div>
-        <div className='container'>
-          <h2>React App</h2>
-          <p>Traveling broadens the mind, exposing you to diverse cultures, cuisines, and perspectives. Each destination offers unique experiences, whether exploring ancient ruins, hiking breathtaking landscapes, or enjoying vibrant city life. Memories forged on these journeys often become cherished stories, enriching your life and fostering an appreciation for the world’s vast beauty.</p>
-        </div>
-        <div className='container'>
-          <h2>React App</h2>
-          <p>Reading is a gateway to countless adventures and a wealth of knowledge. Whether fiction or nonfiction, books transport us to different worlds, sparking creativity and expanding horizons. Through the written word, we connect with diverse viewpoints, deepen our understanding of humanity, and cultivate a lifelong love for learning and discovery. Reading is a gateway to countless adventures and a wealth of knowledge. Whether fiction or nonfiction, books transport us to different worlds, sparking creativity and expanding horizons. Through the written word, we connect with diverse viewpoints, deepen our understanding of humanity, and cultivate a lifelong love for learning and discovery. Reading is a gateway to countless adventures and a wealth of knowledge. Whether fiction or nonfiction, books transport us to different worlds, sparking creativity and expanding horizons. Through the written word, we connect with diverse viewpoints, deepen our understanding of humanity, and cultivate a lifelong love for learning and discovery. Reading is a gateway to countless adventures and a wealth of knowledge. Whether fiction or nonfiction, books transport us to different worlds, sparking creativity and expanding horizons. Through the written word, we connect with diverse viewpoints, deepen our understanding of humanity, and cultivate a lifelong love for learning and discovery. Reading is a gateway to countless adventures and a wealth of knowledge. Whether fiction or nonfiction, books transport us to different worlds, sparking creativity and expanding horizons. Through the written word, we connect with diverse viewpoints, deepen our understanding of humanity, and cultivate a lifelong love for learning and discovery. Reading is a gateway to countless adventures and a wealth of knowledge. Whether fiction or nonfiction, books transport us to different worlds, sparking creativity and expanding horizons. Through the written word, we connect with diverse viewpoints, deepen our understanding of humanity, and cultivate a lifelong love for learning and discovery. Reading is a gateway to countless adventures and a wealth of knowledge. Whether fiction or nonfiction, books transport us to different worlds, sparking creativity and expanding horizons. Through the written word, we connect with diverse viewpoints, deepen our understanding of humanity, and cultivate a lifelong love for learning and discovery. Reading is a gateway to countless adventures and a wealth of knowledge. Whether fiction or nonfiction, books transport us to different worlds, sparking creativity and expanding horizons. Through the written word, we connect with diverse viewpoints, deepen our understanding of humanity, and cultivate a lifelong love for learning and discovery. Reading is a gateway to countless adventures and a wealth of knowledge. Whether fiction or nonfiction, books transport us to different worlds, sparking creativity and expanding horizons. Through the written word, we connect with diverse viewpoints, deepen our understanding of humanity, and cultivate a lifelong love for learning and discovery.</p>
+          <p>
+            Learning to code can open doors to endless possibilities, from creating innovative
+            applications to solving real-world problems. With consistent practice, the once-complicated
+            syntax becomes second nature. Start small, experiment, and embrace mistakes—they’re part of
+            the journey. Every line of code brings you closer to mastering this powerful skillset.
+          </p>
         </div>
       </main>
     </div>
