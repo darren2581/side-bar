@@ -54,7 +54,7 @@ function App() {
       <nav id="sidebar">
         <ul>
           <li className="first-child">
-            <span className="logo">coding2go</span>
+            <span className="logo">app</span>
             <button onClick={toggleSidebar} id="toggle-btn">
               <span className="material-symbols-outlined">
                 {isSidebarCollapsed
@@ -70,7 +70,7 @@ function App() {
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="#/dashboard">
               <span className="material-symbols-outlined">dashboard</span>
               <span>Dashboard</span>
             </a>
